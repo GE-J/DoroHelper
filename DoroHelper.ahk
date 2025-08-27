@@ -2,6 +2,7 @@
 #Include <github>
 #Include <FindText>
 #Include <GuiCtrlTips>
+#Include <RichEdit>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;退出时保存设置
@@ -838,7 +839,6 @@ doroGui.Tips.SetTip(BtnRedPill, "这个开关可能没用`r`n但这个开关没�
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
 doroGui.Add("Button", "xp+260 yp w80 h30", "导出日志").OnEvent("Click", CopyLog)
-doroGui.SetFont('s10', 'Microsoft YaHei UI')
 LogBox := RichEdit(doroGui, "xs+10 ys+30 w330 h340")
 LogBox.WordWrap(true)
 LogBox.Value := "日志开始……`r`n" ;初始内容
@@ -2173,7 +2173,7 @@ Advertisement() {
 }
 ;tag 复制日志
 CopyLog(*) {
-    A_Clipboard := LogBox.Value
+    A_Clipboard := LogBox.GetText()
     ; 给出提示
     MsgBox("日志内容已复制到剪贴板，请将其连同录屏发到群里")
 }
@@ -2335,16 +2335,57 @@ AdjustSize(TargetX, TargetY) {
 ;endregion 坐标辅助函数
 ;region 日志辅助函数
 ;tag 添加日志
-AddLog(text) {
+AddLog(text, color := "black") {
+    ; 确保 LogBox 控件存在
     if (!IsObject(LogBox) || !LogBox.Hwnd) {
         return
     }
-    static lastText := ""  ;静态变量保存上一条内容
-    global LogBox
+    ;静态变量保存上一条内容
+    static lastText := ""
+    ;如果内容与上一条相同则跳过
+    if (text = lastText)
+        return
     lastText := text  ;保存当前内容供下次比较
+    ; 将光标移到文本末尾
+    LogBox.SetSel(-1, -1)
+    ; 保存当前选择位置
+    sel := LogBox.GetSel()
+    start := sel.S
+    ; 插入时间戳
     timestamp := FormatTime(, "HH:mm:ss")
-    LogBox.Value .= timestamp " - " text "`r`n"
-    SendMessage(0x0115, 7, 0, LogBox) ;自动滚动到底部
+    timestamp_text := timestamp "  "
+    LogBox.ReplaceSel(timestamp_text)
+    ; 设置时间戳为灰色
+    sel_before := LogBox.GetSel()
+    LogBox.SetSel(start, start + StrLen(timestamp_text))
+    font_gray := {}
+    font_gray.Color := "gray"
+    LogBox.SetFont(font_gray)
+    LogBox.SetSel(sel_before.S, sel_before.S) ; 恢复光标位置
+    ; 保存时间戳后的位置
+    text_start := sel_before.S
+    ; 插入文本内容
+    LogBox.ReplaceSel(text "`r`n")
+    ; 计算文本内容的长度
+    text_length := StrLen(text)
+    ; 只选择文本内容部分（不包括时间戳）
+    LogBox.SetSel(text_start, text_start + text_length)
+    ; 使用库提供的 SetFont 方法设置文本颜色
+    font := {}
+    font.Color := color
+    LogBox.SetFont(font)
+    ; 设置悬挂缩进 - 使用段落格式
+    ; 创建一个 PARAFORMAT2 对象来设置悬挂缩进
+    PF2 := RichEdit.PARAFORMAT2()
+    PF2.Mask := 0x05 ; PFM_STARTINDENT | PFM_OFFSET
+    PF2.StartIndent := 0   ; 总缩进量（缇单位，1缇=1/1440英寸）
+    PF2.Offset := 1100       ; 悬挂缩进量（负值表示悬挂）
+    ; 应用段落格式到选中的文本
+    SendMessage(0x0447, 0, PF2.Ptr, LogBox.Hwnd) ; EM_SETPARAFORMAT
+    ; 取消选择并将光标移到底部
+    LogBox.SetSel(-1, -1)
+    ; 自动滚动到底部
+    LogBox.ScrollCaret()
 }
 ;tag 日志的时间戳转换
 TimeToSeconds(timeStr) {
