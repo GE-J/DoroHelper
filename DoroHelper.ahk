@@ -1,8 +1,13 @@
 #Requires AutoHotkey >=v2.0
-#Include <github>
-#Include <FindText>
-#Include <GuiCtrlTips>
-#Include <RichEdit>
+try {
+    #Include <github>
+    #Include <FindText>
+    #Include <GuiCtrlTips>
+    #Include <RichEdit>
+} catch {
+    MsgBox "依赖缺失：请重新到GitHub仓库下载完整的包体"
+    ExitApp
+}
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;退出时保存设置
