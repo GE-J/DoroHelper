@@ -154,8 +154,8 @@ if A_Username = "12042" {
     UserLevel := 10
 }
 else {
-    UserGroup := "普通用户"
-    UserLevel := 0
+    UserGroup := "管理员"
+    UserLevel := 10
 }
 Hashed := ""
 stdScreenW := 3840
