@@ -2010,7 +2010,7 @@ CheckUserGroup() {
         ; 设备识别码不在会员数据中
         try TraySetIcon("icon\GoldDoro.ico")
         global UserLevel := 3
-        global UserGroup == "白嫖的金Doro会员"
+               UserGroup := "白嫖的金Doro会员" 
         AddLog("当前设备非会员，但是白嫖了一个金Doro会员")
     }
 }
