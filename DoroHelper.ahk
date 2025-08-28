@@ -148,15 +148,9 @@ BattleActive := 1
 BattleSkip := 0
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
-if A_Username = "12042" {
-    UserGroup := "管理员"
-    ;0是普通用户，1是铜Doro会员，2是银Doro会员，3是金Doro会员，10是管理员
-    UserLevel := 10
-}
-else {
-    UserGroup := "管理员"
-    UserLevel := 10
-}
+;0是普通用户，1是铜Doro会员，2是银Doro会员，3是金Doro会员，10是管理员
+UserGroup := "金Doro会员"
+UserLevel := 3
 Hashed := ""
 stdScreenW := 3840
 stdScreenH := 2160
@@ -1944,7 +1938,7 @@ CheckUserGroup() {
     ; 1. 初始化默认用户组
     try {
         TextUserGroup.Value := "普通用户"
-        UserGroup := "普通用户" ; 同样初始化变量
+        UserGroup := "白嫖的金Doro会员" ; 同样初始化变量
     }
     ; 2. 生成设备唯一标识
     try {
@@ -2014,7 +2008,10 @@ CheckUserGroup() {
         }
     } else {
         ; 设备识别码不在会员数据中
-        AddLog("当前设备非会员")
+        try TraySetIcon("icon\GoldDoro.ico")
+        global UserLevel := 3
+        UserGroup == "白嫖的金Doro会员"
+        AddLog("当前设备非会员，但是白嫖了一个金Doro会员")
     }
 }
 ;endregion 身份辅助函数
