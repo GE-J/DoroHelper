@@ -5051,7 +5051,7 @@ StoryMode(*) {
         }
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已终止"
-            Pause
+            return
         }
     }
 }
@@ -5113,7 +5113,7 @@ QuickBurst(*) {
         }
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已终止"
-            Pause
+            return
         }
     }
 }
