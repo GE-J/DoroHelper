@@ -2160,7 +2160,10 @@ CheckUserGroup() {
         }
     } else {
         ; 设备识别码不在会员数据中
-        AddLog("当前设备非会员")
+        AddLog("当前设备白嫖会员")
+                    try TraySetIcon("icon\GoldDoro.ico")
+                    global UserLevel := 3
+                    UserGroup := "金Doro会员"
     }
     UserGroupInfo := { MembershipType: UserGroup, ExpirationTime: expiryDate }
     return UserGroupInfo
