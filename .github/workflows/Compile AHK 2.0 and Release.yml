@@ -170,7 +170,6 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION_TAG }}
           name: ${{ steps.get_version.outputs.VERSION_TAG }}
           body: |
-            ${{ steps.read_changelog_content.outputs.CHANGELOG_BODY }}
           draft: false
           prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }}
           # 直接使用 VERSION_TAG 构建文件名
@@ -178,10 +177,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Trigger MirrorChyanUploading
-        shell: bash
-        run: |
-          gh workflow run --repo $GITHUB_REPOSITORY mirrorchyan_uploading
-          gh workflow run --repo $GITHUB_REPOSITORY mirrorchyan_release_note
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
