@@ -14,7 +14,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.6.1"
+currentVersion := "v999.6.1"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
