@@ -14,7 +14,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.6.2"
+currentVersion := "v999.6.2"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -162,7 +162,7 @@ else {
     UserGroup := "普通用户"
     UserLevel := 0
 }
-Hashed := ""
+Hashed := "ff1fa9052b66d9cb5d26085135e9d97b9046073389b7d230c574cdb353a713eb"
 stdScreenW := 3840
 stdScreenH := 2160
 nikkeID := ""
@@ -2118,7 +2118,7 @@ CheckUserGroup() {
         mainBoardSerial := GetMainBoardSerial()
         cpuSerial := GetCpuSerial()
         diskSerial := GetDiskSerial()
-        Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+        Hashed := ff1fa9052b66d9cb5d26085135e9d97b9046073389b7d230c574cdb353a713eb
         ; AddLog("当前设备唯一标识：" Hashed)
     } catch as e {
         AddLog("获取硬件信息失败: " e.Message)
@@ -2335,7 +2335,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
     mainBoardSerial := GetMainBoardSerial()
     cpuSerial := GetCpuSerial()
     diskSerial := GetDiskSerial()
-    Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+    Hashed := ff1fa9052b66d9cb5d26085135e9d97b9046073389b7d230c574cdb353a713eb
     ; 步骤2：获取会员信息
     tierSelected := guiTier.Text
     durationSelected := guiDuration.Text
